@@ -1,0 +1,248 @@
+/**
+ * MOBILE SCROLL OPTIMIZATION
+ * PURPOSE: Fix mobile scrolling performance issues while maintaining good UX
+ * STRATEGY: Optimize animations, reduce GPU overhead, enable smooth scrolling
+ * SCOPE: Mobile devices (<768px)
+ */
+
+/* ============================================
+   CORE SCROLL FIX - Enable Proper Scrolling
+   ============================================ */
+
+@media (max-width: 767px) {
+  /* Ensure proper scroll behavior */
+  html {
+    overflow-x: hidden;
+    overflow-y: auto;
+    height: 100%;
+    -webkit-overflow-scrolling: touch;
+  }
+  
+  body {
+    overflow-x: hidden;
+    overflow-y: auto;
+    min-height: 100vh;
+    height: auto;
+    -webkit-overflow-scrolling: touch;
+    position: relative;
+  }
+  
+  /* Home page wrapper */
+  [data-name="Desktop - 72"] {
+    overflow-x: hidden;
+    overflow-y: visible;
+    min-height: 100vh;
+    height: auto;
+    position: relative;
+    width: 100%;
+    max-width: 100vw;
+  }
+  
+  /* Prevent horizontal overflow in all sections */
+  [data-name="Desktop - 72"] > div,
+  [data-name="Desktop - 72"] section {
+    max-width: 100vw;
+    overflow-x: hidden;
+  }
+}
+
+/* ============================================
+   TOUCH INTERACTION OPTIMIZATION
+   ============================================ */
+
+@media (max-width: 767px) {
+  /* Enable vertical touch scrolling */
+  html,
+  body,
+  #root {
+    touch-action: pan-y pinch-zoom;
+  }
+  
+  [data-name="Desktop - 72"] {
+    touch-action: pan-y pinch-zoom;
+  }
+}
+
+/* ============================================
+   ANIMATION OPTIMIZATION - UX-Focused Approach
+   ============================================ */
+
+@media (max-width: 767px) {
+  /* Reduce animation complexity while keeping subtle effects */
+  
+  /* 1. Simplify card hover animations - Use opacity only (lightweight) */
+  [data-name="Desktop - 72"] .cursor-pointer:hover img,
+  [data-name="Desktop - 72"] .cursor-pointer:active img {
+    transform: none !important;
+    transition: opacity 0.2s ease;
+  }
+  
+  /* 2. Disable scale animations (GPU intensive) on mobile */
+  [data-name="Desktop - 72"] img {
+    transform: none !important;
+  }
+  
+  /* 3. Keep counter animations instant */
+  [data-name="Desktop - 72"] [class*="leading-[32px]"] {
+    animation: none !important;
+  }
+  
+  /* 4. Simplify button animations - opacity only */
+  [data-name="Desktop - 72"] button,
+  [data-name="Desktop - 72"] [role="button"] {
+    transition: opacity 0.15s ease, background-color 0.15s ease !important;
+    transform: none !important;
+  }
+  
+  /* 5. Speed up hero text animations */
+  [data-name="Desktop - 72"] [class*="font-['Montserrat"] {
+    animation-duration: 0.3s !important;
+    animation-delay: 0s !important;
+  }
+}
+
+/* ============================================
+   REDUCE GPU OVERHEAD
+   ============================================ */
+
+@media (max-width: 767px) {
+  /* Remove will-change to reduce memory usage */
+  [data-name="Desktop - 72"] * {
+    will-change: auto !important;
+  }
+  
+  /* Remove 3D transforms that force GPU layers */
+  [data-name="Desktop - 72"] {
+    transform: none !important;
+    backface-visibility: visible !important;
+  }
+  
+  /* Optimize images - no transform effects */
+  [data-name="Desktop - 72"] img {
+    will-change: auto;
+    backface-visibility: visible;
+  }
+}
+
+/* ============================================
+   MOTION.DIV / FRAMER MOTION OPTIMIZATION
+   ============================================ */
+
+@media (max-width: 767px) {
+  /* Speed up all motion animations significantly */
+  [data-name="Desktop - 72"] div[style*="transform"],
+  [data-name="Desktop - 72"] p[style*="transform"],
+  [data-name="Desktop - 72"] img[style*="transform"] {
+    transition-duration: 0.2s !important;
+    animation-duration: 0.2s !important;
+  }
+  
+  /* Disable entrance animations that block initial render */
+  [data-name="Desktop - 72"] [style*="opacity: 0"] {
+    opacity: 1 !important;
+    animation: none !important;
+  }
+}
+
+/* ============================================
+   SCROLL PERFORMANCE ENHANCEMENTS
+   ============================================ */
+
+@media (max-width: 767px) {
+  /* Optimize scroll container */
+  [data-name="Desktop - 72"] {
+    contain: layout style;
+    content-visibility: auto;
+  }
+  
+  /* Reduce paint complexity on scroll */
+  [data-name="Desktop - 72"] section {
+    contain: layout style paint;
+  }
+  
+  /* Optimize card rendering */
+  [data-name="Desktop - 72"] [class*="rounded-xl"] {
+    contain: layout paint;
+  }
+}
+
+/* ============================================
+   PREVENT FIXED ELEMENTS FROM BLOCKING SCROLL
+   ============================================ */
+
+@media (max-width: 767px) {
+  /* Ensure fixed nav doesn't interfere with scrolling */
+  [data-name="Desktop - 72"] .fixed {
+    pointer-events: none;
+  }
+  
+  /* Re-enable interactions for nav elements */
+  [data-name="Desktop - 72"] .fixed nav,
+  [data-name="Desktop - 72"] .fixed button,
+  [data-name="Desktop - 72"] .fixed a,
+  [data-name="Desktop - 72"] .fixed [role="button"],
+  [data-name="Desktop - 72"] .fixed input {
+    pointer-events: auto;
+  }
+}
+
+/* ============================================
+   SMOOTH MOMENTUM SCROLLING (iOS)
+   ============================================ */
+
+@media (max-width: 767px) {
+  /* Enable momentum scrolling on iOS */
+  html,
+  body,
+  [data-name="Desktop - 72"] {
+    -webkit-overflow-scrolling: touch;
+  }
+  
+  /* Prevent rubber banding on specific elements */
+  [data-name="Desktop - 72"] .overflow-y-auto,
+  [data-name="Desktop - 72"] .overflow-auto {
+    -webkit-overflow-scrolling: touch;
+  }
+}
+
+/* ============================================
+   PREVENT SCROLL JANK FROM TRANSITIONS
+   ============================================ */
+
+@media (max-width: 767px) {
+  /* Pause animations during scroll for better performance */
+  @supports (animation-play-state: paused) {
+    [data-name="Desktop - 72"].scrolling * {
+      animation-play-state: paused !important;
+    }
+  }
+}
+
+/* ============================================
+   ACCESSIBILITY - RESPECT USER PREFERENCES
+   ============================================ */
+
+@media (max-width: 767px) and (prefers-reduced-motion: reduce) {
+  /* Honor reduced motion preferences */
+  [data-name="Desktop - 72"] * {
+    animation: none !important;
+    transition: none !important;
+  }
+}
+
+/* ============================================
+   CRITICAL CONTENT PRIORITIZATION
+   ============================================ */
+
+@media (max-width: 767px) {
+  /* Load above-the-fold content first */
+  [data-name="Desktop - 72"] > div:first-child {
+    content-visibility: visible;
+  }
+  
+  /* Lazy render below-the-fold sections */
+  [data-name="Desktop - 72"] section:not(:first-child) {
+    content-visibility: auto;
+    contain-intrinsic-size: 500px;
+  }
+}
